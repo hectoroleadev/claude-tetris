@@ -161,3 +161,102 @@ kbd {
 #restart-btn:hover {
   background: #9bbdff;
 }
+
+/* ---- Pause Menu ---- */
+.pause-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.menu-btn {
+  background: #7aa2f7;
+  color: #0f0f17;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.15s;
+  width: 200px;
+}
+
+.menu-btn:hover {
+  background: #9bbdff;
+}
+
+.level-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.level-selector label {
+  font-size: 12px;
+  color: #7aa2f7;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.level-selector input {
+  width: 80px;
+  padding: 6px 8px;
+  background: #1a1a25;
+  border: 1px solid #7aa2f7;
+  border-radius: 4px;
+  color: #7aa2f7;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.level-selector input:focus {
+  outline: none;
+  border-color: #9bbdff;
+  box-shadow: 0 0 8px rgba(122, 162, 247, 0.3);
+}
+
+.controls-display {
+  background: #1a1a25;
+  border: 1px solid #2a2a3a;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-top: 8px;
+  min-width: 200px;
+}
+
+.controls-display ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.controls-display li {
+  font-size: 12px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.controls-display.hidden {
+  display: none;
+}
+
+/* ---- Game Over Menu ---- */
+.gameover-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.gameover-menu.hidden {
+  display: none;
+}
