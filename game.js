@@ -15,6 +15,129 @@ const COLORS = [
   '#ffb74d', // L - orange
 ];
 
+// Theme definitions
+const THEMES = {
+  retro: {
+    colors: [
+      null,
+      '#4dd0e1', // I - cyan
+      '#ffd54f', // O - yellow
+      '#ba68c8', // T - purple
+      '#81c784', // S - green
+      '#e57373', // Z - red
+      '#7986cb', // J - indigo
+      '#ffb74d', // L - orange
+    ],
+    drawBlockFn: (context, x, y, colorIndex, size, colors, alpha) => {
+      if (!colorIndex) return;
+      const color = colors[colorIndex];
+      context.globalAlpha = alpha ?? 1;
+      context.fillStyle = color;
+      context.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
+      // highlight
+      context.fillStyle = 'rgba(255,255,255,0.12)';
+      context.fillRect(x * size + 1, y * size + 1, size - 2, 4);
+      context.globalAlpha = 1;
+    },
+    bodyClass: 'theme-retro'
+  },
+  neon: {
+    colors: [
+      null,
+      '#00FF7F', // I - neon green
+      '#FF00FF', // O - neon magenta
+      '#00FFFF', // T - neon cyan
+      '#FF1493', // S - neon pink
+      '#FFD700', // Z - neon gold
+      '#00FF00', // J - neon lime
+      '#FF6347', // L - neon tomato
+    ],
+    drawBlockFn: (context, x, y, colorIndex, size, colors, alpha) => {
+      if (!colorIndex) return;
+      const color = colors[colorIndex];
+      context.globalAlpha = alpha ?? 1;
+      context.fillStyle = color;
+      context.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
+      // neon glow effect
+      context.shadowColor = color;
+      context.shadowBlur = 10;
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 0;
+      context.strokeStyle = color;
+      context.lineWidth = 1;
+      context.strokeRect(x * size + 1, y * size + 1, size - 2, size - 2);
+      context.shadowColor = 'transparent';
+      context.shadowBlur = 0;
+      context.globalAlpha = 1;
+    },
+    bodyClass: 'theme-neon'
+  },
+  pastel: {
+    colors: [
+      null,
+      '#A8E6CF', // I - pastel mint
+      '#FFE8A8', // O - pastel peach
+      '#FFB3D9', // T - pastel pink
+      '#C8B6E2', // S - pastel lavender
+      '#FFB3A7', // Z - pastel coral
+      '#B4A7D6', // J - pastel purple
+      '#FFD9A8', // L - pastel apricot
+    ],
+    drawBlockFn: (context, x, y, colorIndex, size, colors, alpha) => {
+      if (!colorIndex) return;
+      const color = colors[colorIndex];
+      context.globalAlpha = alpha ?? 1;
+      context.fillStyle = color;
+      context.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
+      // subtle highlight
+      context.fillStyle = 'rgba(255,255,255,0.25)';
+      context.fillRect(x * size + 1, y * size + 1, size - 2, 4);
+      context.globalAlpha = 1;
+    },
+    bodyClass: 'theme-pastel'
+  },
+  pixelart: {
+    colors: [
+      null,
+      '#4dd0e1', // I - cyan
+      '#ffd54f', // O - yellow
+      '#ba68c8', // T - purple
+      '#81c784', // S - green
+      '#e57373', // Z - red
+      '#7986cb', // J - indigo
+      '#ffb74d', // L - orange
+    ],
+    drawBlockFn: (context, x, y, colorIndex, size, colors, alpha) => {
+      if (!colorIndex) return;
+      const color = colors[colorIndex];
+      context.globalAlpha = alpha ?? 1;
+      context.fillStyle = color;
+      context.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
+      // highlight
+      context.fillStyle = 'rgba(255,255,255,0.12)';
+      context.fillRect(x * size + 1, y * size + 1, size - 2, 4);
+      // pixel art dot pattern
+      const dotSize = 2;
+      const padding = Math.floor((size - 6) / 2);
+      context.fillStyle = color;
+      for (let dy = 0; dy < 3; dy++) {
+        for (let dx = 0; dx < 3; dx++) {
+          context.fillRect(
+            x * size + padding + 2 + dx * 3,
+            y * size + padding + 2 + dy * 3,
+            dotSize,
+            dotSize
+          );
+        }
+      }
+      context.globalAlpha = 1;
+    },
+    bodyClass: 'theme-pixel'
+  }
+};
+
+let currentTheme = 'retro';
+
 const PIECES = [
   null,
   [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], // I
@@ -41,6 +164,9 @@ const overlayScore = document.getElementById('overlay-score');
 const restartBtn = document.getElementById('restart-btn');
 
 let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId;
+
+// Theme button references - will be set after DOM is ready
+let themeButtons = {};
 
 function createBoard() {
   return Array.from({ length: ROWS }, () => new Array(COLS).fill(0));
@@ -156,16 +282,31 @@ function updateHUD() {
   levelEl.textContent = level;
 }
 
+function applyTheme(themeName) {
+  if (!THEMES[themeName]) return;
+  currentTheme = themeName;
+  localStorage.setItem('tetris-theme', themeName);
+
+  // Update body class
+  document.body.className = THEMES[themeName].bodyClass;
+
+  // Update theme button active state
+  Object.keys(themeButtons).forEach(btn => {
+    if (btn === themeName) {
+      themeButtons[btn].classList.add('active');
+    } else {
+      themeButtons[btn].classList.remove('active');
+    }
+  });
+
+  // Redraw canvas
+  draw();
+  drawNext();
+}
+
 function drawBlock(context, x, y, colorIndex, size, alpha) {
-  if (!colorIndex) return;
-  const color = COLORS[colorIndex];
-  context.globalAlpha = alpha ?? 1;
-  context.fillStyle = color;
-  context.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
-  // highlight
-  context.fillStyle = 'rgba(255,255,255,0.12)';
-  context.fillRect(x * size + 1, y * size + 1, size - 2, 4);
-  context.globalAlpha = 1;
+  const theme = THEMES[currentTheme];
+  theme.drawBlockFn(context, x, y, colorIndex, size, theme.colors, alpha);
 }
 
 function drawGrid() {
@@ -256,6 +397,26 @@ function loop(ts) {
   animId = requestAnimationFrame(loop);
 }
 
+function initThemeButtons() {
+  // Cache theme button references
+  themeButtons.retro = document.getElementById('theme-retro');
+  themeButtons.neon = document.getElementById('theme-neon');
+  themeButtons.pastel = document.getElementById('theme-pastel');
+  themeButtons.pixelart = document.getElementById('theme-pixelart');
+
+  // Add click handlers
+  Object.keys(themeButtons).forEach(themeName => {
+    const btn = themeButtons[themeName];
+    if (btn) {
+      btn.addEventListener('click', () => applyTheme(themeName));
+    }
+  });
+
+  // Load saved theme from localStorage
+  const savedTheme = localStorage.getItem('tetris-theme') || 'retro';
+  applyTheme(savedTheme);
+}
+
 function init() {
   board = createBoard();
   score = 0;
@@ -301,4 +462,6 @@ document.addEventListener('keydown', e => {
 
 restartBtn.addEventListener('click', init);
 
+// Initialize themes and start game
+initThemeButtons();
 init();
