@@ -31,6 +31,12 @@
           <canvas id="next-canvas" width="120" height="120"></canvas>
         </div>
 
+        <div class="panel-section leaderboard">
+          <span class="label">TOP 5</span>
+          <div id="leaderboard-scores" class="leaderboard-container"></div>
+          <button id="reset-scores-btn" class="reset-btn">Limpiar</button>
+        </div>
+
         <div class="panel-section controls">
           <span class="label">CONTROLS</span>
           <ul>
@@ -48,6 +54,10 @@
       <div class="overlay-box">
         <p id="overlay-title">GAME OVER</p>
         <p id="overlay-score"></p>
+        <div id="overlay-name-input" class="hidden name-input-box">
+          <input type="text" id="player-name" placeholder="Tu nombre" maxlength="15" />
+          <button class="save-score-btn">Guardar</button>
+        </div>
         <button id="restart-btn">Reiniciar</button>
       </div>
     </div>
