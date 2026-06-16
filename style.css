@@ -144,6 +144,41 @@ kbd {
   color: #7aa2f7;
 }
 
+/* ---- Theme Buttons ---- */
+.themes {
+  margin-top: 10px;
+}
+
+.theme-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.theme-btn {
+  padding: 6px 8px;
+  background: #22223a;
+  color: #888;
+  border: 1px solid #3a3a5a;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+
+.theme-btn:hover {
+  color: #aaa;
+  border-color: #5a5a7a;
+}
+
+.theme-btn.active {
+  background: #7aa2f7;
+  color: #0f0f17;
+  border-color: #7aa2f7;
+}
+
 #restart-btn {
   margin-top: 8px;
   background: #7aa2f7;
@@ -160,4 +195,119 @@ kbd {
 
 #restart-btn:hover {
   background: #9bbdff;
+}
+
+/* ---- Theme: Retro ---- */
+body.theme-retro {
+  background: #0f0f17;
+  color: #e0e0e0;
+}
+
+body.theme-retro .game-title {
+  color: #7aa2f7;
+  text-shadow: 0 0 20px rgba(122, 162, 247, 0.5);
+}
+
+body.theme-retro #board {
+  background: #1a1a25;
+  border-color: #2a2a3a;
+}
+
+body.theme-retro #next-canvas {
+  background: #1a1a25;
+  border-color: #2a2a3a;
+}
+
+body.theme-retro .value {
+  color: #7aa2f7;
+}
+
+/* ---- Theme: Neon ---- */
+body.theme-neon {
+  background: #000000;
+  color: #00ff00;
+}
+
+body.theme-neon .game-title {
+  color: #00ff00;
+  text-shadow: 0 0 20px rgba(0, 255, 0, 0.8), 0 0 40px rgba(0, 255, 0, 0.4);
+}
+
+body.theme-neon #board {
+  background: #0a0a0a;
+  border-color: #00ff00;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4), inset 0 0 20px rgba(0, 255, 0, 0.1);
+}
+
+body.theme-neon #next-canvas {
+  background: #0a0a0a;
+  border-color: #00ff00;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+body.theme-neon .value {
+  color: #00ff00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+}
+
+body.theme-neon .label {
+  color: #00ff00;
+}
+
+/* ---- Theme: Pastel ---- */
+body.theme-pastel {
+  background: #f5f5f5;
+  color: #333;
+}
+
+body.theme-pastel .game-title {
+  color: #FFB3D9;
+  text-shadow: 0 0 10px rgba(255, 179, 217, 0.3);
+}
+
+body.theme-pastel #board {
+  background: #fffaf0;
+  border-color: #e8d4e8;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+}
+
+body.theme-pastel #next-canvas {
+  background: #fffaf0;
+  border-color: #e8d4e8;
+}
+
+body.theme-pastel .value {
+  color: #FFB3D9;
+}
+
+body.theme-pastel .label {
+  color: #999;
+}
+
+/* ---- Theme: Pixel ---- */
+body.theme-pixel {
+  background: #0f0f17;
+  color: #e0e0e0;
+}
+
+body.theme-pixel .game-title {
+  color: #7aa2f7;
+  text-shadow: 0 0 20px rgba(122, 162, 247, 0.5);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+body.theme-pixel #board {
+  background: #1a1a25;
+  border-color: #2a2a3a;
+  image-rendering: pixelated;
+}
+
+body.theme-pixel #next-canvas {
+  background: #1a1a25;
+  border-color: #2a2a3a;
+  image-rendering: pixelated;
+}
+
+body.theme-pixel .value {
+  color: #7aa2f7;
 }
